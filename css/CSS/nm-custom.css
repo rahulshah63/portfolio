@@ -1,0 +1,23 @@
+@media only screen and (min-width:768px) {
+ .demo-slider-one {
+  height:calc(100% - 254px)
+ }
+ .mosx-hero-height {
+  height:40%;
+ }
+}
+
+.xperia-border {
+  position: absolute;
+  left: 20px;
+  top: 60px;
+  right: 20px;
+  bottom: 80px;
+  height: auto;
+  overflow-y: hidden;
+}
+
+.xperia-border>img {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease
+}
