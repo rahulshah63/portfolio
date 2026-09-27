@@ -24,7 +24,7 @@ npm run deploy    # build and publish to Cloudflare (needs `npx wrangler login` 
 | Profile photo | `src/assets/profile.jpg` |
 | Logo | `src/components/Logo.astro` (also `public/favicon.svg`) |
 
-A new post is a new Markdown file. `src/content/notes/how-to-write-a-post.md` is a draft template: copy it, rename it, set `draft: false`. The file name is the URL (`my-note.md` becomes `/notes/my-note/`). Posts also go out on `/rss.xml`.
+A new post is a new Markdown file in `src/content/notes/` with `title`, `description`, `category`, `date` and `illustration` (see `src/sketches.ts`) in its frontmatter. Add `draft: true` to keep it out of the built site. The file name is the URL (`my-note.md` becomes `/notes/my-note/`). Posts also go out on `/rss.xml`.
 
 ## Hosting
 

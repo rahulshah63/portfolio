@@ -616,6 +616,8 @@ ol {
 	border-left: 2px solid var(--clay);
 	font-family: var(--font-serif);
 	font-style: italic;
+	font-size: 1.5rem;
+	line-height: 1.4;
 	color: var(--text);
 }
 
