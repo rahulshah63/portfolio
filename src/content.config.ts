@@ -9,6 +9,8 @@ const notes = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
+		// Shown with the date and reading time, e.g. "Web3", "Engineering".
+		category: z.string(),
 		date: z.coerce.date(),
 		updated: z.coerce.date().optional(),
 		// Spot illustration for the post card and header. See src/sketches.ts for the options.

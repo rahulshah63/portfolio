@@ -26,6 +26,8 @@ const posts = await getPosts();
 									<Sketch name={post.data.illustration} />
 								</div>
 								<p class="meta">
+									<span class="category">{post.data.category}</span>
+									<span aria-hidden="true">·</span>
 									<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
 									<span aria-hidden="true">·</span>
 									<span>{readingMinutes(post)} min read</span>
@@ -92,6 +94,11 @@ const posts = await getPosts();
 		margin-top: 1.25rem;
 		font-size: 0.875rem;
 		color: var(--muted);
+	}
+
+	.category {
+		color: var(--text-2);
+		font-weight: 600;
 	}
 
 	.draft {

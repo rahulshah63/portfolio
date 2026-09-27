@@ -654,6 +654,43 @@ ol {
 	background: var(--line);
 }
 
+/* Hand-drawn diagrams inside notes: same ink, clay and draw-in as the other drawings */
+
+.prose .diagram {
+	overflow-x: auto;
+	margin: 2.25em 0;
+	padding: 24px 16px 16px;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: var(--surface);
+}
+
+.prose .diagram svg {
+	--stroke: 2.5;
+	width: 100%;
+	min-width: 560px;
+	height: auto;
+}
+
+.prose .diagram text {
+	font-family: var(--font-sans);
+	font-size: 14px;
+	fill: var(--text-2);
+}
+
+.prose .diagram text.strong {
+	font-size: 16px;
+	font-weight: 600;
+	fill: var(--text);
+}
+
+.prose .diagram figcaption {
+	margin-top: 12px;
+	font-size: 0.875rem;
+	text-align: center;
+	color: var(--muted);
+}
+
 /* Code blocks: Shiki writes both themes as CSS variables */
 
 .astro-code,

@@ -10,5 +10,7 @@ export function formatDate(date: Date) {
 }
 
 export function readingMinutes(post: CollectionEntry<'notes'>) {
-	return Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 230));
+	// Inline HTML such as diagrams isn't reading material, so it doesn't count.
+	const words = (post.body ?? '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+	return Math.max(1, Math.round(words / 230));
 }

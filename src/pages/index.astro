@@ -220,9 +220,11 @@ const posts = (await getPosts()).slice(0, 3);
 									<div class="tile">
 										<Sketch name={post.data.illustration} />
 									</div>
-									<time class="date" datetime={post.data.date.toISOString()}>
-										{formatDate(post.data.date)}
-									</time>
+									<p class="date">
+										<span class="note-category">{post.data.category}</span>
+										<span aria-hidden="true"> · </span>
+										<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+									</p>
 									<h3>{post.data.title}</h3>
 									<p>{post.data.description}</p>
 								</a>
@@ -292,6 +294,11 @@ const posts = (await getPosts()).slice(0, 3);
 	.note-cards .date {
 		display: block;
 		margin-top: 1rem;
+	}
+
+	.note-category {
+		color: var(--text-2);
+		font-weight: 600;
 	}
 
 	.note-cards h3 {
