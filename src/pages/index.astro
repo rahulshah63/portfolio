@@ -3,6 +3,8 @@ import ArrowUpRight from '@phosphor-icons/core/assets/regular/arrow-up-right.svg
 import GitHubLogo from '@phosphor-icons/core/assets/fill/github-logo-fill.svg';
 import Minus from '@phosphor-icons/core/assets/regular/minus.svg';
 import Plus from '@phosphor-icons/core/assets/regular/plus.svg';
+import aarambhaLogo from '../assets/logos/aarambha.png';
+import hope4smileLogo from '../assets/logos/hope4smile.png';
 import BrandLogo from '../components/BrandLogo.astro';
 import HeroArt from '../components/HeroArt.astro';
 import Sketch from '../components/Sketch.astro';
@@ -12,6 +14,7 @@ import { formatDate, getPosts } from '../posts';
 import { academicProjects, awards, education, nonprofits, papers, projects, site, work } from '../site';
 
 const posts = (await getPosts()).slice(0, 3);
+const images = { aarambha: aarambhaLogo, hope4smile: hope4smileLogo };
 ---
 
 <Base>
@@ -121,7 +124,19 @@ const posts = (await getPosts()).slice(0, 3);
 				nonprofits.map((org) => (
 					<li>
 						<div class="tile tile-square" style={`--tone: ${org.tone}`}>
-							<Sketch name={org.sketch} />
+							{org.image ? (
+								<img
+									src={images[org.image].src}
+									width={images[org.image].width}
+									height={images[org.image].height}
+									alt=""
+									class={`sketch logo-image logo-${org.image}`}
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<Sketch name={org.sketch} />
+							)}
 						</div>
 						<div>
 							<h3>{org.name}</h3>
@@ -566,6 +581,20 @@ const posts = (await getPosts()).slice(0, 3);
 	.ngos .tile .sketch,
 	.ngos :global(.tile .sketch) {
 		width: 70%;
+	}
+
+	.ngos :global(.tile .logo-image) {
+		width: 84%;
+		height: auto;
+		max-height: none;
+	}
+
+	.ngos :global(.tile .logo-aarambha) {
+		width: 74%;
+	}
+
+	.ngos :global(.tile .logo-hope4smile) {
+		width: 92%;
 	}
 
 	.ngos h3 {

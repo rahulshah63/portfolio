@@ -517,6 +517,20 @@ ol {
 	transform: none;
 }
 
+/* Raster logos can't trace themselves, so they fade and scale in instead. */
+.motion .logo-image {
+	opacity: 0;
+	transform: scale(0.92);
+}
+
+.motion .logo-image.drawn {
+	opacity: 1;
+	transform: none;
+	transition:
+		opacity 0.6s ease 150ms,
+		transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 150ms;
+}
+
 /* Real logos use the same draw-in, with a thin outline and an ink fill. */
 .brand-logo {
 	--stroke: 0.6;

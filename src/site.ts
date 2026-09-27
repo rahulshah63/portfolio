@@ -105,6 +105,8 @@ export type Project = {
 	sketch: SketchName;
 	// A real logo to show instead of the drawing (see components/BrandLogo.astro).
 	logo?: 'storyhunt' | 'aleo';
+	// A raster logo (PNG) to show instead of the drawing, for brands without an SVG.
+	image?: 'hope4smile' | 'aarambha';
 	tone: string;
 	links: Link[];
 };
@@ -226,6 +228,7 @@ export const nonprofits: Project[] = [
 	{
 		name: 'Aarambha Foundation',
 		sketch: 'seedling',
+		image: 'aarambha',
 		tone: tones.cactus,
 		summary:
 			'Finds children in Nepal who have left school and brings them back, covering fees, supplies and support. A registered NGO (Reg. 54/072/073) with the Social Welfare Council.',
@@ -237,6 +240,7 @@ export const nonprofits: Project[] = [
 	{
 		name: 'Hope4Smile',
 		sketch: 'heart',
+		image: 'hope4smile',
 		tone: tones.mist,
 		summary:
 			'Volunteer-led UK charity supporting education, healthcare, clean water, food relief, safeguarding and opportunity in more than 25 countries.',
