@@ -1,0 +1,24 @@
+---
+import { type SketchName, sketches } from '../sketches';
+
+interface Props {
+	name: SketchName;
+	class?: string;
+}
+
+const { name, class: className } = Astro.props;
+const { fills, strokes } = sketches[name];
+const step = 140;
+---
+
+<svg
+	viewBox="0 0 200 200"
+	class:list={['sketch', className]}
+	style={`--fill-delay: ${strokes.length * step + 450}ms`}
+	aria-hidden="true"
+>
+	<g filter="url(#rough)">
+		{fills.map((d) => <path class="f" d={d} />)}
+		{strokes.map((d, i) => <path class="s" d={d} pathLength="1" style={`--delay: ${i * step}ms`} />)}
+	</g>
+</svg>

@@ -1,0 +1,26 @@
+---
+// The portrait, revealed by two scribbled masks: ink first, then the blue shirt.
+import { portrait } from '../portrait';
+
+const { size, backing, clay, ink } = portrait;
+const rows = 9;
+const step = size / rows;
+// A zigzag that sweeps the canvas top to bottom. Stroked thick inside a mask, it paints the layer in.
+const scribble = Array.from({ length: rows + 1 }, (_, i) => `${i % 2 ? size : 0} ${Math.round(i * step)}`)
+	.map((point, i) => (i ? `L${point}` : `M${point}`))
+	.join(' ');
+---
+
+<svg viewBox={`0 0 ${size} ${size}`} class="sketch portrait" aria-hidden="true">
+	<defs>
+		<mask id="portrait-ink" maskUnits="userSpaceOnUse">
+			<path class="scribble" d={scribble} pathLength="1" style="--delay: 100ms" />
+		</mask>
+		<mask id="portrait-clay" maskUnits="userSpaceOnUse">
+			<path class="scribble" d={scribble} pathLength="1" style="--delay: 900ms" />
+		</mask>
+	</defs>
+	<path class="backing" fill-rule="evenodd" d={backing} />
+	<path class="clay" fill-rule="evenodd" d={clay} mask="url(#portrait-clay)" />
+	<path class="ink" fill-rule="evenodd" d={ink} mask="url(#portrait-ink)" />
+</svg>

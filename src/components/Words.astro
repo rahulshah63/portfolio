@@ -1,0 +1,19 @@
+---
+// Splits a heading into words so they can fade in one after another.
+interface Props {
+	text: string;
+}
+
+const words = Astro.props.text.split(' ');
+---
+
+<span class="words">
+	{
+		words.map((word, i) => (
+			<>
+				<span class="w" style={`--i: ${i}`}>{word}</span>
+				{i < words.length - 1 && ' '}
+			</>
+		))
+	}
+</span>

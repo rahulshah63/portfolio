@@ -1,0 +1,167 @@
+---
+// The contact card. Any button with popovertarget="contact" opens it.
+import ArrowUpRight from '@phosphor-icons/core/assets/regular/arrow-up-right.svg';
+// Brand logos from Font Awesome Free (icons CC BY 4.0, credit kept in each SVG).
+import Facebook from '@fortawesome/fontawesome-free/svgs/brands/facebook.svg';
+import GitHub from '@fortawesome/fontawesome-free/svgs/brands/github.svg';
+import Instagram from '@fortawesome/fontawesome-free/svgs/brands/instagram.svg';
+import LinkedIn from '@fortawesome/fontawesome-free/svgs/brands/linkedin.svg';
+import X from '@fortawesome/fontawesome-free/svgs/brands/x-twitter.svg';
+import Envelope from '@fortawesome/fontawesome-free/svgs/solid/envelope.svg';
+import Close from '@phosphor-icons/core/assets/regular/x.svg';
+import { site } from '../site';
+
+const channels = [
+	{ label: 'Email', handle: site.email, href: `mailto:${site.email}`, Icon: Envelope },
+	{ label: 'LinkedIn', handle: 'rahul-shah63', href: site.links.linkedin, Icon: LinkedIn },
+	{ label: 'X', handle: '@rahulshah_63', href: site.links.x, Icon: X },
+	{ label: 'GitHub', handle: 'rahulshah63', href: site.links.github, Icon: GitHub },
+	{ label: 'Instagram', handle: '_rahul_.sh', href: site.links.instagram, Icon: Instagram },
+	{ label: 'Facebook', handle: 'rahul.shah.34337', href: site.links.facebook, Icon: Facebook },
+];
+---
+
+<div id="contact" popover class="contact" aria-labelledby="contact-title">
+	<div class="contact-head">
+		<h2 id="contact-title">Get in touch</h2>
+		<button type="button" class="icon-link" popovertarget="contact" popovertargetaction="hide" aria-label="Close">
+			<Close class="icon" aria-hidden="true" />
+		</button>
+	</div>
+	<p class="contact-lede">Email is the quickest way to reach me.</p>
+	<ul>
+		{
+			channels.map(({ label, handle, href, Icon }) => (
+				<li>
+					<a href={href}>
+						<Icon class="icon channel-icon" aria-hidden="true" />
+						<span class="channel">
+							<span class="channel-label">{label}</span>
+							<span class="channel-handle">{handle}</span>
+						</span>
+						<ArrowUpRight class="icon arrow" aria-hidden="true" />
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</div>
+
+<style>
+	/* Matches the Elitra modal: blurred page, overlay fading to 60% black, card rising 10px. */
+	.contact {
+		width: min(420px, calc(100vw - 32px));
+		margin: auto;
+		padding: 24px 24px 12px;
+		border: 1px solid var(--line);
+		border-bottom-width: 2px;
+		border-radius: 16px;
+		background: var(--bg);
+		color: var(--text);
+		box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+		opacity: 0;
+		transform: translateY(10px);
+		transition:
+			opacity 0.12s ease-out,
+			transform 0.12s ease-out,
+			overlay 0.5s allow-discrete,
+			display 0.5s allow-discrete;
+	}
+
+	.contact:popover-open {
+		opacity: 1;
+		transform: none;
+	}
+
+	@starting-style {
+		.contact:popover-open {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+	}
+
+	.contact::backdrop {
+		background-color: rgb(0 0 0 / 0);
+		-webkit-backdrop-filter: blur(4px);
+		backdrop-filter: blur(4px);
+		transition:
+			background-color 0.5s ease-out,
+			overlay 0.5s allow-discrete,
+			display 0.5s allow-discrete;
+	}
+
+	.contact:popover-open::backdrop {
+		background-color: rgb(0 0 0 / 0.6);
+	}
+
+	@starting-style {
+		.contact:popover-open::backdrop {
+			background-color: rgb(0 0 0 / 0);
+		}
+	}
+
+	.contact-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.contact-head h2 {
+		font-size: 1.625rem;
+	}
+
+	.contact-lede {
+		margin-top: 0.25rem;
+		font-size: 0.9375rem;
+		color: var(--muted);
+	}
+
+	ul {
+		margin-top: 16px;
+	}
+
+	li + li {
+		border-top: 1px solid var(--line);
+	}
+
+	li a {
+		display: grid;
+		grid-template-columns: 22px minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 14px;
+		padding-block: 14px;
+		text-decoration: none;
+	}
+
+	.channel-icon {
+		font-size: 20px;
+		color: var(--text-2);
+	}
+
+	.channel {
+		display: grid;
+		min-width: 0;
+	}
+
+	.channel-label {
+		font-weight: 600;
+	}
+
+	.channel-handle {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 0.875rem;
+		color: var(--muted);
+	}
+
+	.arrow {
+		color: var(--muted);
+		transition: transform 0.2s ease, color 0.2s ease;
+	}
+
+	li a:hover .arrow {
+		color: var(--text);
+		transform: translate(2px, -2px);
+	}
+</style>

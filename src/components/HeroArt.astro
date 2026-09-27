@@ -1,0 +1,50 @@
+---
+// The hero drawings. The portrait shows first; with motion enabled they take turns drawing themselves in.
+import type { SketchName } from '../sketches';
+import Portrait from './Portrait.astro';
+import Sketch from './Sketch.astro';
+
+const rotation: SketchName[] = ['swap', 'chart', 'bridge', 'ship', 'blocks', 'controller', 'mountains'];
+---
+
+<div class="hero-art" data-enter style="--d: 250ms">
+	<div class="art-item is-active" data-hold="6500">
+		<Portrait />
+	</div>
+	{
+		rotation.map((name) => (
+			<div class="art-item" data-hold="4200">
+				<Sketch name={name} />
+			</div>
+		))
+	}
+</div>
+
+<script>
+	const root = document.documentElement;
+	const art = document.querySelector('.hero-art');
+	const items = [...(art?.querySelectorAll<HTMLElement>('.art-item') ?? [])];
+
+	if (art && items.length && root.classList.contains('motion')) {
+		let index = 0;
+		const draw = (item: HTMLElement) => {
+			item.classList.add('is-active');
+			requestAnimationFrame(() => requestAnimationFrame(() => item.firstElementChild?.classList.add('drawn')));
+		};
+		const next = () => {
+			if (document.hidden) return void setTimeout(next, 1000);
+			const current = items[index];
+			current.classList.remove('is-active');
+			setTimeout(() => current.firstElementChild?.classList.remove('drawn'), 500);
+			index = (index + 1) % items.length;
+			setTimeout(() => {
+				draw(items[index]);
+				setTimeout(next, Number(items[index].dataset.hold));
+			}, 450);
+		};
+		setTimeout(() => {
+			draw(items[0]);
+			setTimeout(next, Number(items[0].dataset.hold));
+		}, 400);
+	}
+</script>

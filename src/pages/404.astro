@@ -1,0 +1,36 @@
+---
+import Sketch from '../components/Sketch.astro';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found">
+	<div class="missing" data-enter>
+		<Sketch name="plane" />
+		<h1>Page not found</h1>
+		<p class="muted">This page does not exist, or it moved.</p>
+		<a href="/" class="button">Go home</a>
+	</div>
+</Base>
+
+<style>
+	.missing {
+		display: grid;
+		justify-items: center;
+		gap: 1rem;
+		padding-top: 72px;
+		text-align: center;
+	}
+
+	.missing :global(.sketch) {
+		width: 180px;
+		margin-bottom: 1rem;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+	}
+
+	.button {
+		margin-top: 1rem;
+	}
+</style>

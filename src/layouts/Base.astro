@@ -1,0 +1,159 @@
+---
+import { Font } from 'astro:assets';
+import Sun from '@phosphor-icons/core/assets/regular/sun.svg';
+import Moon from '@phosphor-icons/core/assets/regular/moon.svg';
+import GitHubLogo from '@phosphor-icons/core/assets/regular/github-logo.svg';
+// Brand logos from Font Awesome Free (icons CC BY 4.0, credit kept in each SVG).
+import GitHubBrand from '@fortawesome/fontawesome-free/svgs/brands/github.svg';
+import LinkedInBrand from '@fortawesome/fontawesome-free/svgs/brands/linkedin.svg';
+import XBrand from '@fortawesome/fontawesome-free/svgs/brands/x-twitter.svg';
+import InstagramBrand from '@fortawesome/fontawesome-free/svgs/brands/instagram.svg';
+import FacebookBrand from '@fortawesome/fontawesome-free/svgs/brands/facebook.svg';
+import EnvelopeSolid from '@fortawesome/fontawesome-free/svgs/solid/envelope.svg';
+import Contact from '../components/Contact.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../site';
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	type?: 'website' | 'article';
+}
+
+const { title, description = site.description, type = 'website' } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socials = [
+	{ label: 'GitHub', href: site.links.github, Icon: GitHubBrand },
+	{ label: 'LinkedIn', href: site.links.linkedin, Icon: LinkedInBrand },
+	{ label: 'X', href: site.links.x, Icon: XBrand },
+	{ label: 'Instagram', href: site.links.instagram, Icon: InstagramBrand },
+	{ label: 'Facebook', href: site.links.facebook, Icon: FacebookBrand },
+	{ label: 'Email', href: `mailto:${site.email}`, Icon: EnvelopeSolid },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="alternate" type="application/rss+xml" title={`${site.name}: Notes`} href="/rss.xml" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta property="og:type" content={type} />
+		<meta property="og:title" content={title ?? site.name} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta name="color-scheme" content="light dark" />
+		<Font cssVariable="--font-serif" preload />
+		<Font cssVariable="--font-sans" preload />
+		<Font cssVariable="--font-mono" />
+		<script is:inline>
+			const root = document.documentElement;
+			try {
+				const theme = localStorage.getItem('theme');
+				if (theme === 'light' || theme === 'dark') root.dataset.theme = theme;
+			} catch {}
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
+		</script>
+	</head>
+	<body>
+		<svg class="defs" aria-hidden="true">
+			<filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+				<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="noise" />
+				<feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+			</filter>
+		</svg>
+
+		<header class="site-header" data-enter style="--d: 0ms; --rise: -20px">
+			<div class="container header-inner">
+				<a href="/" class="wordmark" aria-label={`${site.name}, home`}>
+					<Logo />
+					<span>{site.name}</span>
+				</a>
+				<nav aria-label="Main">
+					<button type="button" class="theme-toggle icon-link" aria-label="Switch between light and dark theme">
+						<Sun class="icon sun" aria-hidden="true" />
+						<Moon class="icon moon" aria-hidden="true" />
+					</button>
+					<a href={site.links.github} class="icon-link" aria-label="GitHub">
+						<GitHubLogo class="icon" aria-hidden="true" />
+					</a>
+					<a href="/notes/" class="button">Notes</a>
+					<button type="button" class="button button-primary hide-sm" popovertarget="contact">Contact</button>
+				</nav>
+			</div>
+		</header>
+
+		<Contact />
+
+		<main class="container">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<div class="container footer-inner">
+				<a href="/" class="wordmark" aria-label={`${site.name}, home`}>
+					<Logo />
+					<span class="footer-name">{site.name}</span>
+				</a>
+				<ul class="socials">
+					{
+						socials.map(({ label, href, Icon }) => (
+							<li>
+								<a href={href} class="icon-link" aria-label={label}>
+									<Icon class="icon" aria-hidden="true" />
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</footer>
+
+		<script>
+			const root = document.documentElement;
+			document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+				const dark = root.dataset.theme
+					? root.dataset.theme === 'dark'
+					: matchMedia('(prefers-color-scheme: dark)').matches;
+				root.dataset.theme = dark ? 'light' : 'dark';
+				try {
+					localStorage.setItem('theme', root.dataset.theme);
+				} catch {}
+			});
+
+			// Draw each illustration once it scrolls into view.
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue;
+						entry.target.classList.add('drawn');
+						observer.unobserve(entry.target);
+					}
+				},
+				{ threshold: 0.35 },
+			);
+			document.querySelectorAll('.sketch:not(.hero-art .sketch)').forEach((sketch) => observer.observe(sketch));
+
+			// Fade sections up as they scroll into view.
+			const reveal = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue;
+						entry.target.classList.add('in');
+						reveal.unobserve(entry.target);
+					}
+				},
+				{ threshold: 0.12 },
+			);
+			document.querySelectorAll('[data-reveal]').forEach((el) => reveal.observe(el));
+		</script>
+	</body>
+</html>

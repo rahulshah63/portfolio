@@ -1,0 +1,27 @@
+---
+// A real logo that draws in like the sketches: its outline traces itself, then the shape fills.
+import aleo from '../assets/logos/aleo.svg?raw';
+import storyhunt from '../assets/logos/storyhunt.svg?raw';
+
+const sources = { aleo, storyhunt };
+
+interface Props {
+	name: keyof typeof sources;
+}
+
+const raw = sources[Astro.props.name];
+const viewBox = raw.match(/viewBox="([^"]+)"/)?.[1] ?? '0 0 48 48';
+const paths = [...raw.matchAll(/\sd="([^"]+)"/g)].map((match) => match[1]);
+// Each shape starts a little after the previous one, so a wordmark writes itself letter by letter.
+const step = 120;
+---
+
+<svg
+	viewBox={viewBox}
+	class:list={['sketch', 'brand-logo', `brand-${Astro.props.name}`]}
+	style={`--fill-delay: ${1000 + (paths.length - 1) * step}ms`}
+	aria-hidden="true"
+>
+	{paths.map((d) => <path class="f" d={d} />)}
+	{paths.map((d, i) => <path class="s" d={d} pathLength="1" style={`--delay: ${i * step}ms`} />)}
+</svg>

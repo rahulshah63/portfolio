@@ -1,0 +1,183 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+import Sketch from '../../components/Sketch.astro';
+import Base from '../../layouts/Base.astro';
+import Words from '../../components/Words.astro';
+import { formatDate, getPosts, readingMinutes } from '../../posts';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post) => ({ params: { slug: post.id }, props: post }));
+}
+
+type Props = CollectionEntry<'notes'>;
+const post = Astro.props;
+const { title, description, date, updated, illustration } = post.data;
+const { Content } = await render(post);
+const minutes = readingMinutes(post);
+---
+
+<Base title={title} description={description} type="article">
+	<div class="post">
+		<nav class="crumbs small" aria-label="Breadcrumb" data-enter style="--d: 150ms; --rise: 0px">
+			<a href="/notes/">Notes</a>
+			<span aria-hidden="true">/</span>
+			<span aria-current="page">{title}</span>
+		</nav>
+
+		<article>
+			<header class="post-head">
+				<div>
+					<h1><Words text={title} /></h1>
+					<p class="summary" data-enter style="--d: 650ms; --rise: 10px">{description}</p>
+					<dl class="meta" data-enter style="--d: 750ms; --rise: 10px">
+						<div>
+							<dt>Date</dt>
+							<dd><time datetime={date.toISOString()}>{formatDate(date)}</time></dd>
+						</div>
+						{
+							updated && (
+								<div>
+									<dt>Updated</dt>
+									<dd><time datetime={updated.toISOString()}>{formatDate(updated)}</time></dd>
+								</div>
+							)
+						}
+						<div>
+							<dt>Reading time</dt>
+							<dd>{minutes} min</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="tile tile-square" data-enter style="--d: 250ms">
+					<Sketch name={illustration} />
+				</div>
+			</header>
+
+			<div class="prose" data-enter style="--d: 850ms">
+				<Content />
+			</div>
+		</article>
+	</div>
+</Base>
+
+<style>
+	/* One centred column: 70% of the screen on desktop, 90% on phones. */
+	.post {
+		width: 70vw;
+		max-width: 100%;
+		margin-inline: auto;
+	}
+
+	.crumbs {
+		display: flex;
+		gap: 0.5rem;
+		padding-top: 28px;
+		color: var(--muted);
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.crumbs a {
+		text-decoration: none;
+	}
+
+	.crumbs a:hover {
+		color: var(--text);
+	}
+
+	.crumbs [aria-current] {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.post-head {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 300px;
+		/* The title lines up with the top of the tile and the line under the date with its bottom. */
+		align-items: stretch;
+		gap: 64px;
+		padding-block: 56px 64px;
+	}
+
+	.post-head > div:first-child {
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* At least square, and as tall as the text beside it. */
+	.post-head .tile {
+		aspect-ratio: auto;
+		min-height: 300px;
+	}
+
+	h1 {
+		font-size: clamp(2.25rem, 5vw, 3.25rem);
+		line-height: 1.1;
+		letter-spacing: -0.015em;
+	}
+
+	.summary {
+		margin-top: 1.25rem;
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 1.3125rem;
+		line-height: 1.5;
+		color: var(--text-2);
+	}
+
+	.meta {
+		flex: 1;
+		display: flex;
+		flex-wrap: wrap;
+		align-content: flex-start;
+		gap: 1rem 2.5rem;
+		margin: 2rem 0 0;
+		padding-bottom: 1.25rem;
+		border-bottom: 1px solid var(--line);
+		font-size: 0.875rem;
+	}
+
+	.meta dt {
+		color: var(--muted);
+	}
+
+	.meta dd {
+		margin: 0.15rem 0 0;
+	}
+
+	@media (max-width: 1023px) {
+		.post-head {
+			grid-template-columns: minmax(0, 1fr) 220px;
+			gap: 40px;
+		}
+
+		.post-head .tile {
+			min-height: 220px;
+		}
+	}
+
+	@media (max-width: 767px) {
+		.post {
+			width: 90vw;
+		}
+
+		/* Phones: drawing on top, then title, summary, and the date row with its line. */
+		.post-head {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 28px;
+			padding-block: 32px 36px;
+		}
+
+		.post-head .tile {
+			grid-row: 1;
+			width: 128px;
+			min-height: 0;
+			aspect-ratio: 1;
+		}
+
+		.meta {
+			flex: none;
+		}
+	}
+</style>
