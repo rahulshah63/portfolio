@@ -28,9 +28,9 @@ A new post is a new Markdown file in `src/content/notes/` with `title`, `descrip
 
 ## Hosting
 
-`wrangler.jsonc` serves `dist/` on `rahul-shah.com.np` and `www.rahul-shah.com.np`. DNS for the domain is on Cloudflare.
+Pushing to `main` deploys the site: `.github/workflows/deploy.yml` builds it and publishes `dist/` to GitHub Pages at `www.rahul-shah.com.np` (set in `public/CNAME`). The bare domain redirects to `www`. DNS for the domain is on Cloudflare.
 
-To deploy on every push instead of running `npm run deploy`, connect this repo in the Cloudflare dashboard under Workers & Pages > Create > Import a repository, with build command `npm run build` and deploy command `npx wrangler deploy`.
+`wrangler.jsonc` is kept as an alternative: `npm run deploy` publishes the same build to Cloudflare Workers, once the domain's DNS records point there instead.
 
 ## Subdomains
 

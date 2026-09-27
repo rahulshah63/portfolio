@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-	site: 'https://rahul-shah.com.np',
+	site: 'https://www.rahul-shah.com.np',
 	integrations: [sitemap()],
 	markdown: {
 		// Code blocks follow the site theme; colors are switched in global.css.

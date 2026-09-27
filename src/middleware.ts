@@ -1,7 +1,7 @@
 import { defineMiddleware } from 'astro:middleware';
 
 // Links to other sites open in a new tab. Runs when pages are built, so the output is plain HTML.
-const ownHost = new URL(import.meta.env.SITE ?? 'https://rahul-shah.com.np').host;
+const ownHost = new URL(import.meta.env.SITE ?? 'https://www.rahul-shah.com.np').host;
 const externalLink = /<a\s([^>]*?)href="(https?:\/\/[^"]+)"([^>]*)>/g;
 
 export const onRequest = defineMiddleware(async (_context, next) => {

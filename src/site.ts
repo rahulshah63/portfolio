@@ -3,7 +3,7 @@
 import type { SketchName } from './sketches';
 
 export const site = {
-	url: 'https://rahul-shah.com.np',
+	url: 'https://www.rahul-shah.com.np',
 	name: 'Rahul Shah',
 	role: 'Full-stack and blockchain engineer',
 	description:
