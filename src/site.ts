@@ -252,7 +252,7 @@ export const education = [
 	{
 		degree: "Bachelor's in Computer Engineering",
 		school: 'IOE Pulchowk Campus, Tribhuvan University, Lalitpur',
-		period: '2018 - 2022',
+		period: '2018 - 2023',
 		highlights: [
 			'Winner, LOCUS 2021 Hack-A-Week',
 			'Vice President, ESAJ Pulchowk',
